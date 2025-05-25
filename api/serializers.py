@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Transaccion, Categoria
+from django.contrib.auth.models import User
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +27,19 @@ class TransaccionSerializer(serializers.ModelSerializer):
             'created_at',
         ]
         read_only_fields = ['id', 'created_at'] #Evita que el usuario pueda modificar el id y la fecha de creación
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email']
+        
+
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            email=validated_data.get('email','')
+        )
+        return user

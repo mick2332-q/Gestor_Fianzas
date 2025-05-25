@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,6 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 #Configuare CORS
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOW_CREDENTIALS = True
 
 
 # Application definition
@@ -109,13 +114,15 @@ AUTH_PASSWORD_VALIDATORS = [
 #Configuración Django Rest Framework
 # https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustomPagination',  
+    'PAGE_SIZE': 10,  
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # Cambia a IsAuthenticated cuando uses JWT
+        'rest_framework.permissions.IsAuthenticated',  # Cambia a IsAuthenticated cuando uses JWT
     ],
 }
 
@@ -141,3 +148,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
