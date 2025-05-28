@@ -21,9 +21,9 @@ class TransaccionViewSet(viewsets.ModelViewSet):
     filterset_class=  TransaccionFilter
 
     ordering_fields = ['fecha', 'monto'] # Campos por los que se puede ordenar
-    ordering = ['id'] # Orden por defecto
+    ordering = ['-created_at'] # Orden por defecto
 
-class RegisterViewSet(generics.CreateAPIView):
+class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]  
+    permission_classes = [AllowAny]    
